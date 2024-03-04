@@ -309,7 +309,6 @@ void threadSignalJoin(threadT *thread) {
 //        Modes.joinTimeout /= 2;
 //        Modes.joinTimeout = imax(Modes.joinTimeout, 2 * SECONDS);
 //    }
-    pthread_cancel(thread->pthread);
     pthread_join(thread->pthread, NULL);
     thread->joined = 1;
 }
