@@ -295,20 +295,23 @@ void threadTimedWait(threadT *thread, struct timespec *ts, int64_t increment) {
 void threadSignalJoin(threadT *thread) {
     if (thread->joined)
         return;
-    int64_t timeout = Modes.joinTimeout;
-    int err = 0;
-    while ((err = pthread_tryjoin_np(thread->pthread, NULL)) && timeout-- > 0) {
-        pthread_cond_signal(&thread->cond);
-        msleep(1);
-    }
-    if (err == 0) {
-        thread->joined = 1;
-    } else {
-        thread->joinFailed = 1;
-        fprintf(stderr, "%s thread: threadSignalJoin timed out after %.1f seconds, undefined behaviour may result!\n", thread->name, (float) Modes.joinTimeout / (float) SECONDS);
-        Modes.joinTimeout /= 2;
-        Modes.joinTimeout = imax(Modes.joinTimeout, 2 * SECONDS);
-    }
+//    int64_t timeout = Modes.joinTimeout;
+//    int err = 0;
+//    while ((err = pthread_tryjoin_np(thread->pthread, NULL)) && timeout-- > 0) {
+//        pthread_cond_signal(&thread->cond);
+//        msleep(1);
+//    }
+//    if (err == 0) {
+//        thread->joined = 1;
+//    } else {
+//        thread->joinFailed = 1;
+//        fprintf(stderr, "%s thread: threadSignalJoin timed out after %.1f seconds, undefined behaviour may result!\n", thread->name, (float) Modes.joinTimeout / (float) SECONDS);
+//        Modes.joinTimeout /= 2;
+//        Modes.joinTimeout = imax(Modes.joinTimeout, 2 * SECONDS);
+//    }
+    pthread_cancel(thread->pthread);
+    pthread_join(thread->pthread, NULL);
+    thread->joined = 1;
 }
 
 int threadAffinity(int core_id) {

@@ -91,6 +91,10 @@ static void exitHandler(int sig) {
     if (sig == SIGQUIT) { sigX = "SIGQUIT"; }
     if (sig == SIGHUP) { sigX = "SIGHUP"; }
     log_with_timestamp("Caught %s, shutting down...", sigX);
+
+    sleep(1);
+    log_with_timestamp("Exit");
+    exit(0);
 }
 
 void receiverPositionChanged(float lat, float lon, float alt) {
