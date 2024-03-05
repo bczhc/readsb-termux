@@ -1,3 +1,10 @@
+# Termux
+
+## Build
+Just do `make`.
+
+---
+
 # Readsb
 
 This is a detached fork of https://github.com/Mictronics/readsb
